@@ -37,6 +37,7 @@ Obsoletes:	wu-ftpd
 Obsoletes:	ftpd-BSD
 Obsoletes:	linux-ftpd
 Obsoletes:	anonftp
+Obsoletes:	bftpd
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/ftpd
