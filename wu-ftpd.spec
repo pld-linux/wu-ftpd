@@ -6,28 +6,29 @@ Release:	1
 License:	BSD
 Group:		Daemons
 Group(pl):	Serwery
-Source0:	ftp://ftp.wu-ftpd.org/pub/dist/%{name}-%{version}.tar.gz
+Source0:	ftp://ftp.wu-ftpd.org/pub/wu-ftpd/%{name}-%{version}.tar.gz
 Source1:	%{name}.inetd
 Source2:	%{name}.logrotate
 Source3:	ftp.pamd
+Source4:	%{name}-passwd
+Source5:	%{name}-group
 Patch0:		ftp://ftp.wu-ftpd.org/pub/dist/patches/apply_to_2.6.1/missing_format_strings.patch
 Patch1:		ftp://ftp.wu-ftpd.org/pub/dist/patches/apply_to_2.6.1/nlst-shows-dirs.patch
 Patch2:		ftp://ftp.wu-ftpd.org/pub/dist/patches/apply_to_2.6.1/pasv-port-allow-correction.patch
 Patch3:		%{name}-install.patch
 Patch4:		%{name}-conf.patch
 Patch5:		%{name}-release.patch
+Patch6:		http://www.t17.ds.pwr.wroc.pl/~misiek/ipv6/%{name}-%{version}-ipv6-20000914.patch.gz
 URL:		http://www.wu-ftpd.org/
 Vendor:		WU-FTPD Development Group <wuftpd-members@wu-ftpd.org>
 BuildRequires:	pam-devel
 BuildRequires:	bison
 BuildRequires:	ncompress
-BuildRequires:	gzip
-BuildRequires:	tar
-BuildRequires:	textutils
+BuildRequires:	pam-devel
 Prereq:		rc-inetd
+Prereq:		awk
 Requires:	rc-inetd
 Requires:	logrotate
-Requires:	pam >= 0.67
 Requires:	inetdaemon
 Provides:	ftpserver
 Obsoletes:	ftpserver
@@ -63,8 +64,9 @@ wirtualnych.
 
 %prep
 %setup -q 
-%patch0 -p0
-%patch1 -p0 
+%patch6 -p1
+#%patch0 -p0
+%patch1 -p1
 %patch2 -p0
 %patch3 -p1
 %patch4 -p1
@@ -82,14 +84,15 @@ autoconf
 	--enable-passwd \
 	--enable-ls \
 	--disable-numericuid \
-	--enable-rfc931
+	--enable-rfc931 \
+	--enable-ipv6
 	
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT/etc/{logrotate.d,pam.d,sysconfig/rc-inetd}
+install -d $RPM_BUILD_ROOT/etc/{logrotate.d,pam.d,sysconfig/rc-inetd,security}
 install -d $RPM_BUILD_ROOT/home/ftp/{etc/msgs,lib,bin,pub/Incoming}
 install -d $RPM_BUILD_ROOT%{_var}/log
 
@@ -99,22 +102,6 @@ ln -sf	   gzip					$RPM_BUILD_ROOT/home/ftp/bin/zcat
 install	-s /lib/{libc-*.so,ld-*.so} 		$RPM_BUILD_ROOT/home/ftp/lib
 install	   /etc/ld.so.cache			$RPM_BUILD_ROOT/home/ftp/etc
 
-cat > $RPM_BUILD_ROOT/home/ftp/etc/passwd <<EOF
-root:*:0:0:::
-bin:*:1:1:::
-operator:*:11:0:::
-ftp:*:14:50:::
-nobody:*:99:99:::
-EOF
-
-cat > $RPM_BUILD_ROOT/home/ftp/etc/group <<EOF
-root::0:
-bin::1:
-daemon::2:
-sys::3:
-adm::4:
-ftp::50:
-EOF
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT INSTALL_USER=$(id -u) INSTALL_GROUP=$(id -g)
 
@@ -126,11 +113,15 @@ install	doc/examples/ftpconversions	$RPM_BUILD_ROOT%{_sysconfdir}/ftpconversions
 install %{SOURCE1}			$RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/ftpd
 install %{SOURCE2}			$RPM_BUILD_ROOT/etc/logrotate.d/ftpd
 install %{SOURCE3}			$RPM_BUILD_ROOT/etc/pam.d/ftp
+install %{SOURCE4}			$RPM_BUILD_ROOT/home/ftp/etc/passwd
+install %{SOURCE5}			$RPM_BUILD_ROOT/home/ftp/etc/group
 install util/xferstats			$RPM_BUILD_ROOT%{_bindir}/xferstat
 
-:> $RPM_BUILD_ROOT%{_sysconfdir}/ftpusers.default
-:> $RPM_BUILD_ROOT%{_sysconfdir}/ftpusers
-:> $RPM_BUILD_ROOT/var/log/xferlog
+touch $RPM_BUILD_ROOT%{_sysconfdir}/ftpusers.default
+touch $RPM_BUILD_ROOT%{_sysconfdir}/ftpusers
+touch $RPM_BUILD_ROOT/var/log/xferlog
+touch $RPM_BUILD_ROOT/etc/security/blacklist.ftp
+
 echo "Too many users. Try again later." > $RPM_BUILD_ROOT/home/ftp/etc/msgs/toomany
 echo "Server shutdown."			> $RPM_BUILD_ROOT/home/ftp/etc/msgs/shutdown
 echo "Wrong file path."			> $RPM_BUILD_ROOT/home/ftp/etc/msgs/path
@@ -138,9 +129,11 @@ echo "Wrong file path."			> $RPM_BUILD_ROOT/home/ftp/etc/msgs/path
 mv $RPM_BUILD_ROOT%{_sbindir}/in.ftpd	$RPM_BUILD_ROOT%{_sbindir}/wu-ftpd
 ln -s wu-ftpd				$RPM_BUILD_ROOT%{_sbindir}/ftpd
 
+gzip -9nf CHANGES CONTRIBUTORS README doc/{HOWTO/*,misc/opie,TODO}
+
 %post 
 /sbin/ldconfig -q -r /home/ftp /lib
-touch /var/log/xferlog /etc/security/blacklist.ftp
+touch /var/log/xferlog
 awk 'BEGIN { FS = ":" }; { if (($3 < 1000) && ($1 != "ftp")) print $1; }' < /etc/passwd >> %{_sysconfdir}/ftpusers.default
 if [ ! -f %{_sysconfdir}/ftpusers ]; then
 	( cd %{_sysconfdir}; cp ftpusers.default ftpusers )
@@ -163,13 +156,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc CHANGES CONTRIBUTORS README doc/{HOWTO/*,misc/opie,TODO}
+%doc CHANGES.gz CONTRIBUTORS.gz README.gz doc/{HOWTO/*,misc/opie,TODO}.gz
 
 %attr(750,root,root) %dir %{_sysconfdir}
 %attr(640,root,root) /etc/logrotate.d/*
 %attr(640,root,root) %ghost /var/log/*
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/*
 %attr(640,root,root) /etc/sysconfig/rc-inetd/ftpd
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/*
+%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist.ftp
 
 %attr(640,root,root) %{_sysconfdir}/ftpusers.default
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/ftpaccess
