@@ -5,7 +5,7 @@ diff -urN wu-ftpd-2.6.1.org/src/newvers.sh wu-ftpd-2.6.1/src/newvers.sh
  #
  if [ ! -r edit ]; then echo 0 > edit; fi
  touch edit
-+echo 'char version[] = "PLD GNU/Linux";' > vers.c
++echo 'char version[] = "PLD Linux";' > vers.c
 +exit 0
  awk '	{	edit = $1 + 1; }\
  END	{	printf "char version[] = \"Version wu-2.6.1(%d) ", edit > "vers.c";\

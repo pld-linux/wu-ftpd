@@ -6,7 +6,7 @@ Summary(ru):	FTP-сервер разработанный в Washington University
 Summary(uk):	FTP-сервер розроблений в Washington University
 Name:		wu-ftpd
 Version:	2.6.2
-Release:	6
+Release:	7
 License:	BSD
 Group:		Daemons
 Source0:	ftp://ftp.wu-ftpd.org/pub/wu-ftpd/%{name}-%{version}.tar.gz
@@ -34,7 +34,6 @@ Requires:	logrotate
 Requires:	inetdaemon
 Provides:	ftpserver
 Obsoletes:	ftpserver
-Obsoletes:	anonftp
 Obsoletes:	bftpd
 Obsoletes:	ftpd-BSD
 Obsoletes:	heimdal-ftpd
@@ -46,6 +45,7 @@ Obsoletes:	proftpd-inetd
 Obsoletes:	proftpd-standalone
 Obsoletes:	pure-ftpd
 Obsoletes:	troll-ftpd
+Obsoletes:	vsftpd
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/ftpd
@@ -169,8 +169,6 @@ echo "Wrong file path."			> $RPM_BUILD_ROOT/home/ftp/etc/msgs/path
 mv -f $RPM_BUILD_ROOT%{_sbindir}/in.ftpd $RPM_BUILD_ROOT%{_sbindir}/wu-ftpd
 ln -sf wu-ftpd $RPM_BUILD_ROOT%{_sbindir}/ftpd
 
-gzip -9nf CHANGES CONTRIBUTORS ERRATA LICENSE README doc/{HOWTO/*,misc/opie,TODO}
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -194,7 +192,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc *.gz doc/*.gz doc/{HOWTO,misc}/*.gz
+%doc CHANGES CONTRIBUTORS ERRATA LICENSE README doc/{HOWTO/*,misc/opie,TODO}
 
 %attr(750,root,root) %dir %{_sysconfdir}
 %attr(640,root,root) /etc/logrotate.d/*
