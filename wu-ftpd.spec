@@ -43,6 +43,7 @@ Requires:	pam >= 0.77.3
 Obsoletes:	bftpd
 Obsoletes:	ftpd-BSD
 Obsoletes:	ftpserver
+Obsoletes:	glftpd
 Obsoletes:	heimdal-ftpd
 Obsoletes:	linux-ftpd
 Obsoletes:	muddleftpd
