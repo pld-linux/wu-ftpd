@@ -150,7 +150,10 @@ ln -sf gzip $RPM_BUILD_ROOT/home/services/ftp/bin/zcat
 install	/lib/{libc-*.so,ld-*.so} $RPM_BUILD_ROOT/home/services/ftp/lib
 install	/etc/ld.so.cache $RPM_BUILD_ROOT/home/services/ftp/etc
 
-%{__make} install DESTDIR=$RPM_BUILD_ROOT INSTALL_USER=$(id -u) INSTALL_GROUP=$(id -g)
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT \
+	INSTALL_USER=$(id -u) \
+	INSTALL_GROUP=$(id -g)
 
 install doc/examples/ftpaccess.heavy	$RPM_BUILD_ROOT%{_sysconfdir}/ftpaccess
 install	doc/examples/ftpservers		$RPM_BUILD_ROOT%{_sysconfdir}/ftpservers
