@@ -136,14 +136,14 @@ mv -f configure.in.new configure.in
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{logrotate.d,pam.d,sysconfig/rc-inetd,security} \
-	$RPM_BUILD_ROOT/home/ftp/{etc/msgs,lib,bin,pub/Incoming} \
+	$RPM_BUILD_ROOT/home/services/ftp/{etc/msgs,lib,bin,pub/Incoming} \
 	$RPM_BUILD_ROOT%{_var}/log
 
-install	/bin/{gzip,tar} $RPM_BUILD_ROOT/home/ftp/bin
-install	%{_bindir}/{compress,cksum,md5sum} $RPM_BUILD_ROOT/home/ftp/bin
-ln -sf gzip $RPM_BUILD_ROOT/home/ftp/bin/zcat
-install	/lib/{libc-*.so,ld-*.so} $RPM_BUILD_ROOT/home/ftp/lib
-install	/etc/ld.so.cache $RPM_BUILD_ROOT/home/ftp/etc
+install	/bin/{gzip,tar} $RPM_BUILD_ROOT/home/services/ftp/bin
+install	%{_bindir}/{compress,cksum,md5sum} $RPM_BUILD_ROOT/home/services/ftp/bin
+ln -sf gzip $RPM_BUILD_ROOT/home/services/ftp/bin/zcat
+install	/lib/{libc-*.so,ld-*.so} $RPM_BUILD_ROOT/home/services/ftp/lib
+install	/etc/ld.so.cache $RPM_BUILD_ROOT/home/services/ftp/etc
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT INSTALL_USER=$(id -u) INSTALL_GROUP=$(id -g)
 
@@ -155,8 +155,8 @@ install	doc/examples/ftpconversions	$RPM_BUILD_ROOT%{_sysconfdir}/ftpconversions
 install %{SOURCE1}			$RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/ftpd
 install %{SOURCE2}			$RPM_BUILD_ROOT/etc/logrotate.d/ftpd
 install %{SOURCE3}			$RPM_BUILD_ROOT/etc/pam.d/ftp
-install %{SOURCE4}			$RPM_BUILD_ROOT/home/ftp/etc/passwd
-install %{SOURCE5}			$RPM_BUILD_ROOT/home/ftp/etc/group
+install %{SOURCE4}			$RPM_BUILD_ROOT/home/services/ftp/etc/passwd
+install %{SOURCE5}			$RPM_BUILD_ROOT/home/services/ftp/etc/group
 install util/xferstats			$RPM_BUILD_ROOT%{_bindir}/xferstat
 
 touch $RPM_BUILD_ROOT%{_sysconfdir}/ftpusers.default
@@ -164,9 +164,9 @@ touch $RPM_BUILD_ROOT%{_sysconfdir}/ftpusers
 touch $RPM_BUILD_ROOT/var/log/xferlog
 touch $RPM_BUILD_ROOT/etc/security/blacklist.ftp
 
-echo "Too many users. Try again later." > $RPM_BUILD_ROOT/home/ftp/etc/msgs/toomany
-echo "Server shutdown."			> $RPM_BUILD_ROOT/home/ftp/etc/msgs/shutdown
-echo "Wrong file path."			> $RPM_BUILD_ROOT/home/ftp/etc/msgs/path
+echo "Too many users. Try again later." > $RPM_BUILD_ROOT/home/services/ftp/etc/msgs/toomany
+echo "Server shutdown."			> $RPM_BUILD_ROOT/home/services/ftp/etc/msgs/shutdown
+echo "Wrong file path."			> $RPM_BUILD_ROOT/home/services/ftp/etc/msgs/path
 
 mv -f $RPM_BUILD_ROOT%{_sbindir}/in.ftpd $RPM_BUILD_ROOT%{_sbindir}/wu-ftpd
 ln -sf wu-ftpd $RPM_BUILD_ROOT%{_sbindir}/ftpd
