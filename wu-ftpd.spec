@@ -1,7 +1,7 @@
 Summary:	An FTP daemon provided by Washington University.
 Name: 		wu-ftpd
 Version:	2.4.2vr17
-Release:	3
+Release:	4
 Copyright:	BSD
 Group:		System Environment/Daemons
 Source: 	ftp://ftp.vr.net/pub/wu-ftpd/wu-ftpd-2.4.2-vr17.tar.gz
