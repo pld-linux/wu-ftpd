@@ -2,7 +2,7 @@ Summary:	An FTP daemon provided by Washington University
 Summary(pl):	Serwer FTP stworzony przez Uniwersystet Waszyngtona
 Name:		wu-ftpd
 Version:	2.6.1
-Release:	9
+Release:	10
 License:	BSD
 Group:		Daemons
 Group(de):	Server
@@ -74,6 +74,9 @@ wirtualnych.
 %patch5 -p1
 
 %build
+sed -e 's/dnl.*//' <configure.in >configure.in.new
+mv configure.in.new configure.in
+aclocal
 autoconf
 %configure \
 	--with-etc-dir=%{_sysconfdir} \
