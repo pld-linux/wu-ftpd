@@ -25,7 +25,6 @@ URL:		http://www.wu-ftpd.org/
 Vendor:		WU-FTPD Development Group <wuftpd-members@wu-ftpd.org>
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	pam-devel
 BuildRequires:	bison
 BuildRequires:	ncompress
 BuildRequires:	pam-devel
