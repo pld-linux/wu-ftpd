@@ -34,7 +34,6 @@ Requires:	inetdaemon
 Provides:	ftpserver
 Obsoletes:	ftpserver
 Obsoletes:	wu-ftpd
-Obsoletes:	anonftp
 Obsoletes:	ftpd-BSD
 Obsoletes:	linux-ftpd
 Obsoletes:	anonftp
