@@ -1,0 +1,6 @@
+root::0:
+bin::1:
+daemon::2:
+sys::3:
+adm::4:
+ftp::50:
