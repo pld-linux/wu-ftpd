@@ -2,7 +2,7 @@ Summary:	An FTP daemon provided by Washington University
 Summary(pl):	Serwer FTP stworzony przez Uniwersystet Waszyngtona
 Name:		wu-ftpd
 Version:	2.6.1
-Release:	10
+Release:	11
 License:	BSD
 Group:		Daemons
 Group(de):	Server
@@ -20,6 +20,7 @@ Patch3:		%{name}-install.patch
 Patch4:		%{name}-conf.patch
 Patch5:		%{name}-release.patch
 Patch6:		http://www.t17.ds.pwr.wroc.pl/~misiek/ipv6/%{name}-%{version}-ipv6-20000914.patch.gz
+Patch7:		ftp://ftp.wu-ftpd.org/pub/wu-ftpd/patches/apply-to-2.6.1/ftpglob.patch
 URL:		http://www.wu-ftpd.org/
 Vendor:		WU-FTPD Development Group <wuftpd-members@wu-ftpd.org>
 BuildRequires:	autoconf
@@ -78,6 +79,7 @@ wirtualnych.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch7 -p0
 
 %build
 sed -e 's/dnl.*//' <configure.in >configure.in.new
