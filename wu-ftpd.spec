@@ -6,7 +6,7 @@ Summary(ru):	FTP-сервер разработанный в Washington University
 Summary(uk):	FTP-сервер розроблений в Washington University
 Name:		wu-ftpd
 Version:	2.6.2
-Release:	10
+Release:	11
 License:	BSD
 Vendor:		WU-FTPD Development Group <wuftpd-members@wu-ftpd.org>
 Group:		Daemons
@@ -25,6 +25,7 @@ Patch2:		%{name}-conf.patch
 Patch3:		%{name}-release.patch
 Patch4:		%{name}-ls.patch
 Patch5:		%{name}-2.6.2-realpatch.patch
+Patch6:		%{name}-sec_debian.patch
 URL:		http://www.wu-ftpd.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -34,13 +35,13 @@ BuildRequires:	pam-devel
 PreReq:		rc-inetd
 Requires(post):	awk
 Requires(post):	fileutils
-Requires:	rc-inetd
-Requires:	logrotate
-Requires:	inetdaemon
 Provides:	ftpserver
-Obsoletes:	ftpserver
+Requires:	inetdaemon
+Requires:	logrotate
+Requires:	rc-inetd
 Obsoletes:	bftpd
 Obsoletes:	ftpd-BSD
+Obsoletes:	ftpserver
 Obsoletes:	heimdal-ftpd
 Obsoletes:	linux-ftpd
 Obsoletes:	muddleftpd
@@ -56,7 +57,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/ftpd
 %define		_localstatedir	/var/run
-%define		_ftpdir		/home/services/ftp
+%define		_ftpdir		/home/ftp
 
 %description
 wu-ftpd is a replacement ftp server for Un*x systems. Besides
@@ -118,6 +119,7 @@ Protocol). Можливост╕ wu-ftpd включають протоколювання пересилок
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 %build
 sed -e 's/dnl.*//' <configure.in >configure.in.new
@@ -208,7 +210,6 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc CHANGES CONTRIBUTORS ERRATA LICENSE README doc/{HOWTO/*,misc/opie,TODO}
-
 %attr(750,root,root) %dir %{_sysconfdir}
 %attr(640,root,root) /etc/logrotate.d/*
 %attr(640,root,root) %ghost /var/log/*
