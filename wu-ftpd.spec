@@ -4,7 +4,7 @@ Summary(pl):	Serwer FTP stworzony przez Uniwersystet Waszyngtona
 Summary(pt_BR):	Deamon FTP da Universidade de Washington
 Name:		wu-ftpd
 Version:	2.6.2
-Release:	2
+Release:	3
 License:	BSD
 Group:		Daemons
 Source0:	ftp://ftp.wu-ftpd.org/pub/wu-ftpd/%{name}-%{version}.tar.gz
@@ -39,6 +39,9 @@ Obsoletes:	heimdal-ftpd
 Obsoletes:	linux-ftpd
 Obsoletes:	muddleftpd
 Obsoletes:	proftpd
+Obsoletes:	proftpd-common
+Obsoletes:	proftpd-inetd
+Obsoletes:	proftpd-standalone
 Obsoletes:	pure-ftpd
 Obsoletes:	troll-ftpd
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
