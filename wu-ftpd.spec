@@ -62,8 +62,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_ftpdir		/home/services/ftp
 
 %description
-wu-ftpd is a replacement ftp server for Un*x systems. Besides
-supporting the ftp protocol defined in RFC 959, it adds the following
+wu-ftpd is a replacement FTP server for Un*x systems. Besides
+supporting the FTP protocol defined in RFC 959, it adds the following
 features: logging of transfers, logging of commands, on the fly
 compression and archiving, classification of users on type and
 location, per class limits, per directory upload permissions,
@@ -71,14 +71,14 @@ restricted guest accounts, system wide and per directory messages,
 directory alias, cdpath, filename filter, virtual host support.
 
 %description -l es
-wu-ftpd es el daemon que ccc archivos FTP para clientes ftp. Es útil
+wu-ftpd es el daemon que ccc archivos FTP para clientes FTP. Es útil
 si deseas transferir programas entre ordenadores sin ejecutar un
 sistema de archivos de red como NFS; o si deseas tener un sitio de FTP
 anónimo (en este caso, necesitas instalar el paquete anonftp).
 
 %description -l pl
-wu-ftpd jest bezpo¶rednim zamiennikiem serwera ftp dla systemów Un*x.
-Poza wsparciem dla protoko³u ftp zdefiniowanego w RFC 959 wu-ftpd
+wu-ftpd jest bezpo¶rednim zamiennikiem serwera FTP dla systemów Un*x.
+Poza wsparciem dla protoko³u FTP zdefiniowanego w RFC 959 wu-ftpd
 zawiera kilka nowo¶ci takich jak: logowanie transferów, logowanie
 komend, kompresja i archiwizacja w locie, klasyfikacja u¿ytkowników na
 podstawie typu i lokalizacji, limity na podstawie klasy, uprawnienia
@@ -88,7 +88,7 @@ aliasy dla katalogów, cdpath, filtr nazw plików, wsparcie dla serwerów
 wirtualnych.
 
 %description -l pt_BR
-wu-ftpd é o daemon que serve arquivos FTP para clientes ftp. Ele é
+wu-ftpd é o daemon que serve arquivos FTP para clientes FTP. Ele é
 útil se você deseja transferir programas entre computadores sem rodar
 um sistema de arquivos de rede como NFS; ou se você deseja ter um site
 de FTP anônimo (neste caso, você necessita instalar o pacote anonftp).
