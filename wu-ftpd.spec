@@ -57,7 +57,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/ftpd
 %define		_localstatedir	/var/run
-%define		_ftpdir		/home/services/ftp
+%define		_ftpdir		/home/ftp
 
 %description
 wu-ftpd is a replacement ftp server for Un*x systems. Besides
