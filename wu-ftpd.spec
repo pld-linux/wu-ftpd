@@ -1,5 +1,7 @@
 Summary:	An FTP daemon provided by Washington University
+Summary(es):	Deamon FTP de la Universidad de Washington
 Summary(pl):	Serwer FTP stworzony przez Uniwersystet Waszyngtona
+Summary(pt_BR):	Deamon FTP da Universidade de Washington
 Name:		wu-ftpd
 Version:	2.6.2
 Release:	1
@@ -54,6 +56,12 @@ location, per class limits, per directory upload permissions,
 restricted guest accounts, system wide and per directory messages,
 directory alias, cdpath, filename filter, virtual host support.
 
+%description -l es
+wu-ftpd es el daemon que ccc archivos FTP para clientes ftp. Es útil
+si deseas transferir programas entre ordenadores sin ejecutar un
+sistema de archivos de red como NFS; o si deseas tener un sitio de FTP
+anónimo (en este caso, necesitas instalar el paquete anonftp).
+
 %description -l pl
 wu-ftpd jest bezpo¶rednim zamiennikiem serwera ftp dla systemów Un*x.
 Poza wsparciem dla protoko³u ftp zdefiniowanego w RFC 959 wu-ftpd
@@ -64,6 +72,12 @@ do uploadowania dla dowolnego katalogu, restrykcyjne konta dla go¶ci,
 ogólne komunikaty systemowe oraz komunikaty w zale¿no¶ci od katalogu,
 aliasy dla katalogów, cdpath, filtr nazw plików, wsparcie dla serwerów
 wirtualnych.
+
+%description -l pt_BR
+wu-ftpd é o daemon que serve arquivos FTP para clientes ftp. Ele é
+útil se você deseja transferir programas entre computadores sem rodar
+um sistema de arquivos de rede como NFS; ou se você deseja ter um site
+de FTP anônimo (neste caso, você necessita instalar o pacote anonftp).
 
 %prep
 %setup -q 
