@@ -213,7 +213,7 @@ fi
 %defattr(644,root,root,755)
 %doc CHANGES CONTRIBUTORS ERRATA LICENSE README doc/{HOWTO/*,misc/opie,TODO}
 %attr(750,root,root) %dir %{_sysconfdir}
-%attr(640,root,root) /etc/logrotate.d/*
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/logrotate.d/*
 %attr(640,root,root) %ghost /var/log/*
 %attr(640,root,root) /etc/sysconfig/rc-inetd/ftpd
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/*
