@@ -47,6 +47,7 @@ Obsoletes:	proftpd-standalone
 Obsoletes:	pure-ftpd
 Obsoletes:	troll-ftpd
 Obsoletes:	vsftpd
+Conflicts:	man-pages < 1.51
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/ftpd
