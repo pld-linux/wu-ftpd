@@ -1,16 +1,10 @@
-If you intend to use 'configure', after applying this patch you MUST
-run the 'autoconf' command to generate a new 'configure' command.
-
-
-
-diff -u config.h.in.orig config.h.in
---- config.h.in.orig	Sat Jul  1 13:42:15 2000
-+++ config.h.in	Thu Jul 20 09:57:39 2000
-@@ -343,3 +343,13 @@
-  * Define this to support quota mechanisms...
+diff -ruN wu-ftpd-2.6.1.orig/config.h.in wu-ftpd-2.6.1/config.h.in
+--- wu-ftpd-2.6.1.orig/config.h.in	Sun Dec  3 19:48:14 2000
++++ wu-ftpd-2.6.1/config.h.in	Sun Dec  3 19:50:33 2000
+@@ -344,6 +344,15 @@
   */
  #undef QUOTA
-+
+ 
 +/*
 + * Define this to revert the NLST command to showing directories.
 + *
@@ -20,10 +14,12 @@ diff -u config.h.in.orig config.h.in
 + * line FTP client users.
 + */
 +#undef NLST_SHOWS_DIRS
-
-diff -u config.h.noac.orig config.h.noac
---- config.h.noac.orig	Sat Jul  1 13:42:15 2000
-+++ config.h.noac	Thu Jul 20 09:54:46 2000
+ 
+ /*
+  * IPv6
+diff -ruN wu-ftpd-2.6.1.orig/config.h.noac wu-ftpd-2.6.1/config.h.noac
+--- wu-ftpd-2.6.1.orig/config.h.noac	Sat Jul  1 19:42:15 2000
++++ wu-ftpd-2.6.1/config.h.noac	Sun Dec  3 19:49:18 2000
 @@ -378,3 +378,13 @@
   * CONSUMES ALL AVAILABLE MEMORY.
   */
@@ -38,10 +34,9 @@ diff -u config.h.noac.orig config.h.noac
 + * line FTP client users.
 + */
 +#undef NLST_SHOWS_DIRS
-
-diff -u configure.in.orig configure.in
---- configure.in.orig	Sat Jul  1 13:42:15 2000
-+++ configure.in	Thu Jul 20 10:05:08 2000
+diff -ruN wu-ftpd-2.6.1.orig/configure.in wu-ftpd-2.6.1/configure.in
+--- wu-ftpd-2.6.1.orig/configure.in	Sun Dec  3 19:48:14 2000
++++ wu-ftpd-2.6.1/configure.in	Sun Dec  3 19:49:18 2000
 @@ -202,6 +202,8 @@
  	[ bufsize=$withval ], [ bufsize=no ])
  AC_ARG_WITH(backlog,	 [  --with-backlog=x        number of incoming processes to backlog in daemon mode],
@@ -51,7 +46,7 @@ diff -u configure.in.orig configure.in
  
  LIBS=""
  
-@@ -954,6 +956,9 @@
+@@ -1158,6 +1160,9 @@
  fi
  if test $badclients = yes; then
  	AC_DEFINE(SUPPORT_BROKEN_CLIENTS)
@@ -61,11 +56,10 @@ diff -u configure.in.orig configure.in
  fi
  
  dnl TODO:is there a better check whether or not an argument is numeric???
-
-diff -u src/ftpd.c.orig src/ftpd.c
---- src/ftpd.c.orig	Sat Jul  1 14:17:39 2000
-+++ src/ftpd.c	Thu Jul 20 09:52:17 2000
-@@ -6486,7 +6486,10 @@
+diff -ruN wu-ftpd-2.6.1.orig/src/ftpd.c wu-ftpd-2.6.1/src/ftpd.c
+--- wu-ftpd-2.6.1.orig/src/ftpd.c	Sun Dec  3 19:48:14 2000
++++ wu-ftpd-2.6.1/src/ftpd.c	Sun Dec  3 19:49:18 2000
+@@ -6975,7 +6975,10 @@
  	    }
  	    goto globfree;
  	}
