@@ -1,73 +1,198 @@
 Summary:	An FTP daemon provided by Washington University.
-Name: 		wu-ftpd
-Version:	2.4.2vr17
-Release:	4
-Copyright:	BSD
+Summary(pl):	Serwer FTP stworzony przez Uniwersystet Waszyngtona
+Name:		wu-ftpd
+Version:	2.6.1
+Release:	1
+License:	BSD
 Group:		Daemons
-Source: 	ftp://ftp.vr.net/pub/wu-ftpd/wu-ftpd-2.4.2-vr17.tar.gz
-Source1:	ftpd.logrotate
-Source2:	ftp.pamd
-Patch0:		wu-ftpd-2.4.2-vr17-redhat.patch
-Patch1:		wu-ftpd-2.4.2-vr17-glob.patch
-Patch2:		wu-ftpd-2.4.2-vr17-pathname.patch
-Requires:	pam >= 0.59
+Group(pl):	Serwery
+Source0:	ftp://ftp.wu-ftpd.org/pub/dist/%{name}-%{version}.tar.gz
+Source1:	%{name}.inetd
+Source2:	%{name}.logrotate
+Source3:	ftp.pamd
+Patch0:		ftp://ftp.wu-ftpd.org/pub/dist/patches/apply_to_2.6.1/missing_format_strings.patch
+Patch1:		ftp://ftp.wu-ftpd.org/pub/dist/patches/apply_to_2.6.1/nlst-shows-dirs.patch
+Patch2:		ftp://ftp.wu-ftpd.org/pub/dist/patches/apply_to_2.6.1/pasv-port-allow-correction.patch
+Patch3:		%{name}-install.patch
+Patch4:		%{name}-conf.patch
+Patch5:		%{name}-release.patch
+URL:		http://www.wu-ftpd.org/
+Vendor:		WU-FTPD Development Group <wuftpd-members@wu-ftpd.org>
+BuildRequires:	pam-devel
+BuildRequires:	bison
+BuildRequires:	ncompress
+BuildRequires:	gzip
+BuildRequires:	tar
+BuildRequires:	textutils
+Prereq:		rc-inetd
+Requires:	rc-inetd
+Requires:	logrotate
+Requires:	pam >= 0.67
+Requires:	inetdaemon
 Provides:	ftpserver
-Prereq:		fileutils
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Obsoletes:	ftpserver
+Obsoletes:	wu-ftpd
+Obsoletes:	anonftp
+Obsoletes:	ftpd-BSD
+Obsoletes:	linux-ftpd
+Obsoletes:	anonftp
+BuildRoot:      %{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		_sysconfdir	/etc/ftpd
+%define		_localstatedir	/var/run
 
 %description
-The wu-ftpd package contains the wu-ftpd FTP (File Transfer Protocol)
-server daemon.  The FTP protocol is a method of transferring files
-between machines on a network and/or over the Internet.  Wu-ftpd's
-features include logging of transfers, logging of commands, on the fly
-compression and archiving, classification of users' type and location,
-per class limits, per directory upload permissions, restricted guest
-accounts, system wide and per directory messages, directory alias,
-cdpath, filename filter and virtual host support.
+wu-ftpd is a replacement ftp server for Un*x systems. Besides
+supporting the ftp protocol defined in RFC 959, it adds the following
+features: logging of transfers, logging of commands, on the fly
+compression and archiving, classification of users on type and
+location, per class limits, per directory upload permissions,
+restricted guest accounts, system wide and per directory messages,
+directory alias, cdpath, filename filter, virtual host support.
 
-Install the wu-ftpd package if you need to provide FTP service to remote
-users.
+%description -l pl
+wu-ftpd jest bezpo¶rednim zamiennikiem serwera ftp dla systemów Un*x.
+Poza wsparciem dla protoko³u ftp zdefiniowanego w RFC 959 wu-ftpd
+zawiera kilka nowo¶ci takich jak: logowanie transferów, logowanie
+koment, kompresja i archiwizacja w locie, klasyfikacja u¿ytkowników
+na podstawie typu i lokalizacji, limity na podstawie klasy, uprawnienia
+do uploadowania dla dowolnego katalogu, restrykcyjne konta dla go¶ci,
+ogólne komunikaty systemowe oraz komunikaty w zale¿no¶ci od katalogu,
+aliasy dla katalogów, cdpath, filtr nazw plików, wsparcie dla serwerów
+wirtualnych.
 
 %prep
-%setup -q -n wu-ftpd-2.4.2-vr17
-mkdir rhsconfig
-%patch0 -p1
-%patch1 -p1 -b .glob
-%patch2 -p1 -b .pathname
+%setup -q 
+%patch0 -p0
+%patch1 -p0 
+%patch2 -p0
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
 
 %build
-RPM_OPT_FLAGS="$RPM_OPT_FLAGS" ./build lnx USE_PAM=1
+autoconf
+%configure \
+	--with-etc-dir=%{_sysconfdir} \
+	--with-pid-dir=%{_localstatedir} \
+	--with-log-dir=%{_var}/log \
+	--enable-pam \
+	--enable-quota \
+	--enable-ratios \
+	--enable-passwd \
+	--enable-ls \
+	--disable-numericuid \
+	--enable-rfc931
+	
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/etc
-%{__make} install DESTDIR=$RPM_BUILD_ROOT
-install -m755 util/xferstats $RPM_BUILD_ROOT/usr/sbin
-cd rhsconfig
-install -m 600 ftpaccess ftpusers  ftphosts ftpgroups ftpconversions $RPM_BUILD_ROOT/etc
-strip $RPM_BUILD_ROOT/usr/sbin/* || :
-mkdir -p $RPM_BUILD_ROOT/etc/{pam,logrotate}.d
-install -m 644 %{SOURCE1} $RPM_BUILD_ROOT/etc/logrotate.d/ftpd
-install -m 644 %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/ftp
-ln -sf in.ftpd $RPM_BUILD_ROOT/usr/sbin/wu.ftpd
-ln -sf in.ftpd $RPM_BUILD_ROOT/usr/sbin/in.wuftpd
+
+install -d $RPM_BUILD_ROOT/etc/{logrotate.d,pam.d,sysconfig/rc-inetd}
+install -d $RPM_BUILD_ROOT/home/ftp/{etc/msgs,lib,bin,pub/Incoming}
+install -d $RPM_BUILD_ROOT%{_var}/log
+
+install	-s /bin/{gzip,tar}			$RPM_BUILD_ROOT/home/ftp/bin
+install	-s %{_bindir}/{compress,cksum,md5sum}	$RPM_BUILD_ROOT/home/ftp/bin
+ln -sf	   gzip					$RPM_BUILD_ROOT/home/ftp/bin/zcat
+install	-s /lib/{libc-*.so,ld-*.so} 		$RPM_BUILD_ROOT/home/ftp/lib
+install	   /etc/ld.so.cache			$RPM_BUILD_ROOT/home/ftp/etc
+
+cat > $RPM_BUILD_ROOT/home/ftp/etc/passwd <<EOF
+root:*:0:0:::
+bin:*:1:1:::
+operator:*:11:0:::
+ftp:*:14:50:::
+nobody:*:99:99:::
+EOF
+
+cat > $RPM_BUILD_ROOT/home/ftp/etc/group <<EOF
+root::0:
+bin::1:
+daemon::2:
+sys::3:
+adm::4:
+ftp::50:
+EOF
+
+%{__make} install DESTDIR=$RPM_BUILD_ROOT INSTALL_USER=$(id -u) INSTALL_GROUP=$(id -g)
+
+install doc/examples/ftpaccess.heavy	$RPM_BUILD_ROOT%{_sysconfdir}/ftpaccess
+install	doc/examples/ftpservers		$RPM_BUILD_ROOT%{_sysconfdir}/ftpservers
+install doc/examples/ftpgroups		$RPM_BUILD_ROOT%{_sysconfdir}/ftpgroups
+install doc/examples/ftphosts		$RPM_BUILD_ROOT%{_sysconfdir}/ftphosts
+install	doc/examples/ftpconversions	$RPM_BUILD_ROOT%{_sysconfdir}/ftpconversions
+install %{SOURCE1}			$RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/ftpd
+install %{SOURCE2}			$RPM_BUILD_ROOT/etc/logrotate.d/ftpd
+install %{SOURCE3}			$RPM_BUILD_ROOT/etc/pam.d/ftp
+install util/xferstats			$RPM_BUILD_ROOT%{_bindir}/xferstat
+
+:> $RPM_BUILD_ROOT%{_sysconfdir}/ftpusers.default
+:> $RPM_BUILD_ROOT%{_sysconfdir}/ftpusers
+:> $RPM_BUILD_ROOT/var/log/xferlog
+echo "Too many users. Try again later." > $RPM_BUILD_ROOT/home/ftp/etc/msgs/toomany
+echo "Server shutdown."			> $RPM_BUILD_ROOT/home/ftp/etc/msgs/shutdown
+echo "Wrong file path."			> $RPM_BUILD_ROOT/home/ftp/etc/msgs/path
+
+mv $RPM_BUILD_ROOT%{_sbindir}/in.ftpd	$RPM_BUILD_ROOT%{_sbindir}/wu-ftpd
+ln -s wu-ftpd				$RPM_BUILD_ROOT%{_sbindir}/ftpd
+
+%post 
+/sbin/ldconfig -q -r /home/ftp /lib
+touch /var/log/xferlog /etc/security/blacklist.ftp
+awk 'BEGIN { FS = ":" }; { if (($3 < 1000) && ($1 != "ftp")) print $1; }' < /etc/passwd >> %{_sysconfdir}/ftpusers.default
+if [ ! -f %{_sysconfdir}/ftpusers ]; then
+	( cd %{_sysconfdir}; cp ftpusers.default ftpusers )
+fi
+
+if [ -f /var/lock/subsys/rc-inetd ]; then
+	/etc/rc.d/init.d/rc-inetd restart 1>&2
+else
+	echo "Type \"/etc/rc.d/init.d/rc-inetd start\" to start inet sever" 1>&2
+fi
+
+%postun
+if [ "$1" = "0" -a -f /var/lock/subsys/rc-inetd ]; then
+	/sbin/ldconfig -q -r /home/ftp /lib
+	/etc/rc.d/init.d/rc-inetd reload 1>&2
+fi
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-if [ ! -f /var/log/xferlog ]; then
-    touch /var/log/xferlog
-    chmod 600 /var/log/xferlog
-fi
-
 %files
-%defattr(-,root,root)
-%doc README ANNOUNCE-RELEASE ERRATA VIRTUAL.FTP.SUPPORT
-%doc doc/FIXES doc/examples
-/usr/sbin/*
-/usr/bin/*
-/usr/man/*/*
-%config /etc/ftp*
-%attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/ftp
-%config /etc/logrotate.d/ftpd
+%defattr(644,root,root,755)
+%doc CHANGES CONTRIBUTORS README doc/{HOWTO/*,misc/opie,TODO}
+
+%attr(750,root,root) %dir %{_sysconfdir}
+%attr(640,root,root) /etc/logrotate.d/*
+%attr(640,root,root) %ghost /var/log/*
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/*
+%attr(640,root,root) /etc/sysconfig/rc-inetd/ftpd
+
+%attr(640,root,root) %{_sysconfdir}/ftpusers.default
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/ftpaccess
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/ftpconversions
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/ftpgroups
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/ftphosts
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/ftpservers
+%attr(640,root,root) %ghost %{_sysconfdir}/ftpusers
+
+%attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_sbindir}/*
+
+%{_mandir}/man[158]/*
+
+%dir /home/ftp/pub
+%attr(644,root,root) %config(noreplace) %verify(not md5 mtime size) /home/ftp/etc/msgs/*
+%attr(711,root,root) %dir /home/ftp/pub/Incoming
+%attr(711,root,root) %dir /home/ftp/bin
+%attr(755,root,root) /home/ftp/bin/*
+%attr(711,root,root) %dir /home/ftp/etc
+%attr(755,root,root) %dir /home/ftp/etc/msgs
+%attr(755,root,root) %dir /home/ftp/lib
+%attr(755,root,root) /home/ftp/lib/*
+/home/ftp/etc/ld.so.cache
+/home/ftp/etc/passwd
+/home/ftp/etc/group
