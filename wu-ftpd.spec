@@ -11,6 +11,7 @@ License:	BSD
 Vendor:		WU-FTPD Development Group <wuftpd-members@wu-ftpd.org>
 Group:		Daemons
 Source0:	ftp://ftp.wu-ftpd.org/pub/wu-ftpd/%{name}-%{version}.tar.gz
+# Source0-md5:	b3c271f02aadf663b8811d1bff9da3f6
 Source1:	%{name}.inetd
 Source2:	%{name}.logrotate
 Source3:	ftp.pamd
