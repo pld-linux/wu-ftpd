@@ -1,0 +1,312 @@
+diff -ru wu-ftpd-2.4.2-vr17.orig/src/extensions.c wu-ftpd-2.4.2-vr17/src/extensions.c
+--- wu-ftpd-2.4.2-vr17.orig/src/extensions.c	Mon Mar 29 20:31:41 1999
++++ wu-ftpd-2.4.2-vr17/src/extensions.c	Sat Apr 17 15:46:00 1999
+@@ -105,8 +105,10 @@
+ #endif
+ 
+ #ifdef __STDC__
++extern void ftpglobfree(char **);
+ extern char **ftpglob(register char *v),
+ #else
++extern char ftpglobfree();
+ extern char **ftpglob(),
+ #endif
+  *globerr,
+@@ -710,8 +712,7 @@
+                 }
+             }
+             if (sfilelist) {
+-                blkfree(sfilelist);
+-                free((char *) sfilelist);
++                ftpglobfree(sfilelist);
+             }
+         }
+     }
+diff -ru wu-ftpd-2.4.2-vr17.orig/src/ftpd.c wu-ftpd-2.4.2-vr17/src/ftpd.c
+--- wu-ftpd-2.4.2-vr17.orig/src/ftpd.c	Mon Mar 29 20:31:41 1999
++++ wu-ftpd-2.4.2-vr17/src/ftpd.c	Sat Apr 17 15:44:59 1999
+@@ -5599,8 +5599,10 @@
+     sdirlist = NULL;
+     if (strpbrk(whichfiles, "~{[*?") != NULL) {
+ #ifdef __STDC__
++        extern void ftpglobfree(char **);
+         extern char **ftpglob(register char *v),
+ #else
++	extern void ftpglobfree();
+         extern char **ftpglob(),
+ #endif
+          *globerr;
+@@ -5755,8 +5757,7 @@
+     pdata = -1;
+ globfree:
+     if (sdirlist) {
+-        blkfree(sdirlist);
+-        free((char *) sdirlist);
++	ftpglobfree(sdirlist);
+     }
+ }
+ 
+diff -ru wu-ftpd-2.4.2-vr17.orig/src/glob.c wu-ftpd-2.4.2-vr17/src/glob.c
+--- wu-ftpd-2.4.2-vr17.orig/src/glob.c	Thu Mar  4 01:45:58 1999
++++ wu-ftpd-2.4.2-vr17/src/glob.c	Sat Apr 17 15:59:55 1999
+@@ -35,6 +35,58 @@
+ static char sccsid[] = "@(#)$Id$ from glob.c 5.9 (Berkeley) 2/25/91";
+ #endif /* not lint */
+ 
++/* This glob code is of questionable trustworthiness. This whole pile
++   needs to be moved over to autoconf, now. */
++#if defined(HAVE_GLOB) || defined(__linux__)
++
++#include <glob.h>
++#include <stdlib.h>
++
++char	*globerr;
++char    *home;
++
++void blkfree(char **);
++char	**copyblk();
++
++void ftpglobfree(char ** foo) {
++    free(foo);
++}
++
++char ** ftpglob(char *pattern)
++{
++    glob_t globResult;
++    int i, length, ptrSize;
++    char ** result;
++    char * items;
++
++    if (glob(pattern, 0, NULL, &globResult)) {
++	globerr = "Error performing glob";
++	return NULL;
++    }
++
++    length = 0;
++    for (i = 0; i < globResult.gl_pathc; i++) {
++	length += strlen(globResult.gl_pathv[i]) + 1;
++    }
++
++    ptrSize = (globResult.gl_pathc + 1) * sizeof(char *);
++    result = malloc(ptrSize + length);
++    items = ((char *) result) + ptrSize;
++    for (i = 0; i < globResult.gl_pathc; i++) {
++	result[i] = items;
++	strcpy(items, globResult.gl_pathv[i]);
++	items += strlen(globResult.gl_pathv[i]) + 1;
++    }
++    
++    result[i] = NULL;
++
++    globfree(&globResult);
++    
++    return result;
++}
++
++#else
++
+ /*
+  * C-shell glob for random programs.
+  */
+@@ -76,7 +128,6 @@
+ extern	int errno;
+ char	*strspl();
+ static	char *strend();
+-char	**copyblk();
+ 
+ static void acollect(), collect(), expand(), Gcat();
+ static void ginit(), matchdir(), rscan(), sort();
+@@ -107,6 +158,10 @@
+ int any();
+ #endif
+ 
++void ftpglobfree(char ** foo) {
++    blkfree(foo);
++}
++
+ char **
+ #ifdef __STDC__
+ ftpglob(register char *v)
+@@ -692,21 +747,46 @@
+ 	return(0);
+ }
+ 
++static
++char *
++#ifdef __STDC__
++strend(register char *cp)
++#else
++strend(cp)
++register char *cp;
++#endif
++{
++
++	while (*cp)
++		cp++;
++	return (cp);
++}
++/*
++ * Extract a home directory from the password file
++ * The argument points to a buffer where the name of the
++ * user whose home directory is sought is currently.
++ * We write the home directory of the user back there.
++ */
+ int
+ #ifdef __STDC__
+-blklen(register char **av)
++gethdir(char *home)
+ #else
+-blklen(av)
+-register char **av;
++gethdir(home)
++char *home;
+ #endif
+ {
+-	register int i = 0;
++	register struct passwd *pp = getpwnam(home);
++	register char *root = NULL;
++	if (!pp || home + strlen(pp->pw_dir) >= lastgpathp)
++		return (1);
++	root = strstr(pp->pw_dir, "/./");
++        (void) strcpy(home, root?(root+2):pp->pw_dir);
+ 
+-	while (*av++)
+-		i++;
+-	return (i);
++	return (0);
+ }
+ 
++#endif /* HAVE_GLOB */
++
+ char **
+ #ifdef __STDC__
+ blkcpy(char **oav, register char **bv)
+@@ -722,19 +802,6 @@
+ 	return (oav);
+ }
+ 
+-void
+-#ifdef __STDC__
+-blkfree(char **av0)
+-#else
+-blkfree(av0)
+-char **av0;
+-#endif
+-{
+-	register char **av = av0;
+-
+-	while (*av)
+-		free(*av++);
+-}
+ 
+ char *
+ #ifdef __STDC__
+@@ -754,56 +821,48 @@
+ 	return (ep);
+ }
+ 
+-char **
++void
+ #ifdef __STDC__
+-copyblk(register char **v)
++blkfree(char **av0)
+ #else
+-copyblk(v)
+-register char **v;
++blkfree(av0)
++char **av0;
+ #endif
+ {
+-	register char **nv = (char **)malloc((unsigned)((blklen(v) + 1) *
+-						sizeof(char **)));
+-	if (nv == (char **)0)
+-		fatal("Out of memory");
++	register char **av = av0;
+ 
+-	return (blkcpy(nv, v));
++	while (*av)
++		free(*av++);
+ }
+ 
+-static
+-char *
++int
+ #ifdef __STDC__
+-strend(register char *cp)
++blklen(register char **av)
+ #else
+-strend(cp)
+-register char *cp;
++blklen(av)
++register char **av;
+ #endif
+ {
++	register int i = 0;
+ 
+-	while (*cp)
+-		cp++;
+-	return (cp);
++	while (*av++)
++		i++;
++	return (i);
+ }
+-/*
+- * Extract a home directory from the password file
+- * The argument points to a buffer where the name of the
+- * user whose home directory is sought is currently.
+- * We write the home directory of the user back there.
+- */
+-int
++
++char **
+ #ifdef __STDC__
+-gethdir(char *home)
++copyblk(register char **v)
+ #else
+-gethdir(home)
+-char *home;
++copyblk(v)
++register char **v;
+ #endif
+ {
+-	register struct passwd *pp = getpwnam(home);
+-	register char *root = NULL;
+-	if (!pp || home + strlen(pp->pw_dir) >= lastgpathp)
+-		return (1);
+-	root = strstr(pp->pw_dir, "/./");
+-        (void) strcpy(home, root?(root+2):pp->pw_dir);
++	register char **nv = (char **)malloc((unsigned)((blklen(v) + 1) *
++						sizeof(char **)));
++	if (nv == (char **)0)
++		fatal("Out of memory");
+ 
+-	return (0);
++	return (blkcpy(nv, v));
+ }
++
+diff -ru wu-ftpd-2.4.2-vr17.orig/src/popen.c wu-ftpd-2.4.2-vr17/src/popen.c
+--- wu-ftpd-2.4.2-vr17.orig/src/popen.c	Thu Mar  4 01:45:59 1999
++++ wu-ftpd-2.4.2-vr17/src/popen.c	Sat Apr 17 15:43:19 1999
+@@ -82,10 +82,12 @@
+      *gargv[MAX_GARGV],
+      *vv[2];
+ #ifdef __STDC__
++    extern void ftpglobfree(char **);
+     extern char **ftpglob(register char *v),
+     **copyblk(register char **v),
+      *strspl(register char *cp, register char *dp),
+ #else
++    extern void ftpglobfree();
+     extern char **ftpglob(),
+     **copyblk(),
+      *strspl(),
+@@ -210,8 +212,7 @@
+     pids[fileno(iop)] = pid;
+ 
+   pfree:for (argc = 1; argc < MAX_ARGV && argv[argc]; argc++) {
+-        blkfree((char **) argv[argc]);
+-        free((char *) argv[argc]);
++        ftpglobfree((char **) argv[argc]);
+     }
+     return (iop);
+ }
