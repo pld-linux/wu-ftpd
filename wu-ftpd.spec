@@ -1,8 +1,8 @@
 Summary:	An FTP daemon provided by Washington University
 Summary(pl):	Serwer FTP stworzony przez Uniwersystet Waszyngtona
 Name:		wu-ftpd
-Version:	2.6.1
-Release:	11
+Version:	2.6.2
+Release:	1
 License:	BSD
 Group:		Daemons
 Group(de):	Server
@@ -13,14 +13,10 @@ Source2:	%{name}.logrotate
 Source3:	ftp.pamd
 Source4:	%{name}-passwd
 Source5:	%{name}-group
-Patch0:		ftp://ftp.wu-ftpd.org/pub/dist/patches/apply_to_2.6.1/missing_format_strings.patch
-Patch1:		ftp://ftp.wu-ftpd.org/pub/dist/patches/apply_to_2.6.1/nlst-shows-dirs.patch
-Patch2:		ftp://ftp.wu-ftpd.org/pub/dist/patches/apply_to_2.6.1/pasv-port-allow-correction.patch
-Patch3:		%{name}-install.patch
-Patch4:		%{name}-conf.patch
-Patch5:		%{name}-release.patch
-Patch6:		http://www.t17.ds.pwr.wroc.pl/~misiek/ipv6/%{name}-%{version}-ipv6-20000914.patch.gz
-Patch7:		ftp://ftp.wu-ftpd.org/pub/wu-ftpd/patches/apply-to-2.6.1/ftpglob.patch
+Patch0:		%{name}-ipv6.patch
+Patch1:		%{name}-install.patch
+Patch2:		%{name}-conf.patch
+Patch3:		%{name}-release.patch
 URL:		http://www.wu-ftpd.org/
 Vendor:		WU-FTPD Development Group <wuftpd-members@wu-ftpd.org>
 BuildRequires:	autoconf
@@ -62,7 +58,7 @@ directory alias, cdpath, filename filter, virtual host support.
 wu-ftpd jest bezpo¶rednim zamiennikiem serwera ftp dla systemów Un*x.
 Poza wsparciem dla protoko³u ftp zdefiniowanego w RFC 959 wu-ftpd
 zawiera kilka nowo¶ci takich jak: logowanie transferów, logowanie
-koment, kompresja i archiwizacja w locie, klasyfikacja u¿ytkowników na
+komend, kompresja i archiwizacja w locie, klasyfikacja u¿ytkowników na
 podstawie typu i lokalizacji, limity na podstawie klasy, uprawnienia
 do uploadowania dla dowolnego katalogu, restrykcyjne konta dla go¶ci,
 ogólne komunikaty systemowe oraz komunikaty w zale¿no¶ci od katalogu,
@@ -71,14 +67,10 @@ wirtualnych.
 
 %prep
 %setup -q 
-%patch6 -p1
-#%patch0 -p0
+%patch0 -p1
 %patch1 -p1
-%patch2 -p0
+%patch2 -p1
 %patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch7 -p0
 
 %build
 sed -e 's/dnl.*//' <configure.in >configure.in.new
@@ -138,7 +130,7 @@ echo "Wrong file path."			> $RPM_BUILD_ROOT/home/ftp/etc/msgs/path
 mv -f $RPM_BUILD_ROOT%{_sbindir}/in.ftpd $RPM_BUILD_ROOT%{_sbindir}/wu-ftpd
 ln -sf wu-ftpd $RPM_BUILD_ROOT%{_sbindir}/ftpd
 
-gzip -9nf CHANGES CONTRIBUTORS README doc/{HOWTO/*,misc/opie,TODO}
+gzip -9nf CHANGES CONTRIBUTORS ERRATA LICENSE README doc/{HOWTO/*,misc/opie,TODO}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -147,7 +139,7 @@ rm -rf $RPM_BUILD_ROOT
 touch /var/log/xferlog
 awk 'BEGIN { FS = ":" }; { if (($3 < 1000) && ($1 != "ftp")) print $1; }' < /etc/passwd >> %{_sysconfdir}/ftpusers.default
 if [ ! -f %{_sysconfdir}/ftpusers ]; then
-	( cd %{_sysconfdir}; cp ftpusers.default ftpusers )
+	( cd %{_sysconfdir}; cp -f ftpusers.default ftpusers )
 fi
 
 if [ -f /var/lock/subsys/rc-inetd ]; then
@@ -163,7 +155,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc CHANGES.gz CONTRIBUTORS.gz README.gz doc/{HOWTO/*,misc/opie,TODO}.gz
+%doc *.gz doc/*.gz doc/{HOWTO,misc}/*.gz
 
 %attr(750,root,root) %dir %{_sysconfdir}
 %attr(640,root,root) /etc/logrotate.d/*
