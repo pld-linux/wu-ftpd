@@ -2,9 +2,11 @@ Summary:	An FTP daemon provided by Washington University
 Summary(es):	Deamon FTP de la Universidad de Washington
 Summary(pl):	Serwer FTP stworzony przez Uniwersystet Waszyngtona
 Summary(pt_BR):	Deamon FTP da Universidade de Washington
+Summary(ru):	FTP-сервер разработанный в Washington University
+Summary(uk):	FTP-сервер розроблений в Washington University
 Name:		wu-ftpd
 Version:	2.6.2
-Release:	3
+Release:	6
 License:	BSD
 Group:		Daemons
 Source0:	ftp://ftp.wu-ftpd.org/pub/wu-ftpd/%{name}-%{version}.tar.gz
@@ -80,6 +82,26 @@ wu-ftpd И o daemon que serve arquivos FTP para clientes ftp. Ele И
 Зtil se vocЙ deseja transferir programas entre computadores sem rodar
 um sistema de arquivos de rede como NFS; ou se vocЙ deseja ter um site
 de FTP anТnimo (neste caso, vocЙ necessita instalar o pacote anonftp).
+
+%description -l ru
+Этот пакет содержит сервер wu-ftpd протокола FTP (File Transfer
+Protocol). Возможности wu-ftpd включают протоколирование пересылок
+файлов, протоколирование команд, компрессию и архивирование "на лету",
+классификация пользователей по типам и "локальности", разные лимиты
+для разных классов, разрешения на загрузку файлов по каждому каталогу
+отдельно, ограниченные гостевые входы, общесистемные и индивидуальные
+для каталогов сообщения, синонимы каталогов, cdpath, фильтр имен
+файлов и поддержка виртуальных серверов.
+
+%description -l uk
+Цей пакет м╕стить сервер wu-ftpd протоколу FTP (File Transfer
+Protocol). Можливост╕ wu-ftpd включають протоколювання пересилок
+файл╕в, протоколювання команд, компрес╕я та арх╕вац╕я "на льоту",
+класиф╕кац╕я користувач╕в по типу та та "локальност╕", р╕зн╕ обмеження
+для р╕зних клас╕в, покаталоговий дозв╕л на завантаження файл╕в,
+обмежен╕ гостьов╕ входи, загальн╕ та окрем╕ для каталог╕в
+пов╕домлення, синон╕ми каталог╕в, cdpath, ф╕льтр ╕мен файл╕в та
+п╕дтримка в╕ртуальних сервер╕в.
 
 %prep
 %setup -q
