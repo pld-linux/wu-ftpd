@@ -13,7 +13,7 @@ Patch2:		wu-ftpd-2.4.2-vr17-pathname.patch
 Requires:	pam >= 0.59
 Provides:	ftpserver
 Prereq:		fileutils
-Buildroot:	/var/tmp/wu-ftpd-root
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 The wu-ftpd package contains the wu-ftpd FTP (File Transfer Protocol)
