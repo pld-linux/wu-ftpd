@@ -1,0 +1,11 @@
+--- wu-ftpd/src/realpath.c.realpath	2001-12-22 10:25:53.000000000 +0100
++++ wu-ftpd/src/realpath.c	2003-07-22 15:10:12.000000000 +0200
+@@ -299,7 +299,7 @@
+ 	rootd = 0;
+ 
+     if (*wbuf) {
+-	if (strlen(resolved) + strlen(wbuf) + rootd + 1 > MAXPATHLEN) {
++	if (strlen(resolved) + strlen(wbuf) + (1 - rootd) + 1 > MAXPATHLEN) {
+ 	    errno = ENAMETOOLONG;
+ 	    goto err1;
+ 	}
