@@ -1,10 +1,11 @@
-Summary:	An FTP daemon provided by Washington University.
+Summary:	An FTP daemon provided by Washington University
 Summary(pl):	Serwer FTP stworzony przez Uniwersystet Waszyngtona
 Name:		wu-ftpd
 Version:	2.6.1
-Release:	1
+Release:	9
 License:	BSD
 Group:		Daemons
+Group(de):	Server
 Group(pl):	Serwery
 Source0:	ftp://ftp.wu-ftpd.org/pub/wu-ftpd/%{name}-%{version}.tar.gz
 Source1:	%{name}.inetd
@@ -37,7 +38,7 @@ Obsoletes:	anonftp
 Obsoletes:	ftpd-BSD
 Obsoletes:	linux-ftpd
 Obsoletes:	anonftp
-BuildRoot:      %{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/ftpd
 %define		_localstatedir	/var/run
@@ -55,8 +56,8 @@ directory alias, cdpath, filename filter, virtual host support.
 wu-ftpd jest bezpo¶rednim zamiennikiem serwera ftp dla systemów Un*x.
 Poza wsparciem dla protoko³u ftp zdefiniowanego w RFC 959 wu-ftpd
 zawiera kilka nowo¶ci takich jak: logowanie transferów, logowanie
-koment, kompresja i archiwizacja w locie, klasyfikacja u¿ytkowników
-na podstawie typu i lokalizacji, limity na podstawie klasy, uprawnienia
+koment, kompresja i archiwizacja w locie, klasyfikacja u¿ytkowników na
+podstawie typu i lokalizacji, limity na podstawie klasy, uprawnienia
 do uploadowania dla dowolnego katalogu, restrykcyjne konta dla go¶ci,
 ogólne komunikaty systemowe oraz komunikaty w zale¿no¶ci od katalogu,
 aliasy dla katalogów, cdpath, filtr nazw plików, wsparcie dla serwerów
@@ -91,17 +92,15 @@ autoconf
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT/etc/{logrotate.d,pam.d,sysconfig/rc-inetd,security} \
+	$RPM_BUILD_ROOT/home/ftp/{etc/msgs,lib,bin,pub/Incoming} \
+	$RPM_BUILD_ROOT%{_var}/log
 
-install -d $RPM_BUILD_ROOT/etc/{logrotate.d,pam.d,sysconfig/rc-inetd,security}
-install -d $RPM_BUILD_ROOT/home/ftp/{etc/msgs,lib,bin,pub/Incoming}
-install -d $RPM_BUILD_ROOT%{_var}/log
-
-install	-s /bin/{gzip,tar}			$RPM_BUILD_ROOT/home/ftp/bin
-install	-s %{_bindir}/{compress,cksum,md5sum}	$RPM_BUILD_ROOT/home/ftp/bin
-ln -sf	   gzip					$RPM_BUILD_ROOT/home/ftp/bin/zcat
-install	-s /lib/{libc-*.so,ld-*.so} 		$RPM_BUILD_ROOT/home/ftp/lib
-install	   /etc/ld.so.cache			$RPM_BUILD_ROOT/home/ftp/etc
-
+install	/bin/{gzip,tar} $RPM_BUILD_ROOT/home/ftp/bin
+install	%{_bindir}/{compress,cksum,md5sum} $RPM_BUILD_ROOT/home/ftp/bin
+ln -sf gzip $RPM_BUILD_ROOT/home/ftp/bin/zcat
+install	/lib/{libc-*.so,ld-*.so} $RPM_BUILD_ROOT/home/ftp/lib
+install	/etc/ld.so.cache $RPM_BUILD_ROOT/home/ftp/etc
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT INSTALL_USER=$(id -u) INSTALL_GROUP=$(id -g)
 
@@ -126,13 +125,12 @@ echo "Too many users. Try again later." > $RPM_BUILD_ROOT/home/ftp/etc/msgs/toom
 echo "Server shutdown."			> $RPM_BUILD_ROOT/home/ftp/etc/msgs/shutdown
 echo "Wrong file path."			> $RPM_BUILD_ROOT/home/ftp/etc/msgs/path
 
-mv $RPM_BUILD_ROOT%{_sbindir}/in.ftpd	$RPM_BUILD_ROOT%{_sbindir}/wu-ftpd
-ln -s wu-ftpd				$RPM_BUILD_ROOT%{_sbindir}/ftpd
+mv -f $RPM_BUILD_ROOT%{_sbindir}/in.ftpd $RPM_BUILD_ROOT%{_sbindir}/wu-ftpd
+ln -s wu-ftpd $RPM_BUILD_ROOT%{_sbindir}/ftpd
 
 gzip -9nf CHANGES CONTRIBUTORS README doc/{HOWTO/*,misc/opie,TODO}
 
 %post 
-/sbin/ldconfig -q -r /home/ftp /lib
 touch /var/log/xferlog
 awk 'BEGIN { FS = ":" }; { if (($3 < 1000) && ($1 != "ftp")) print $1; }' < /etc/passwd >> %{_sysconfdir}/ftpusers.default
 if [ ! -f %{_sysconfdir}/ftpusers ]; then
@@ -147,7 +145,6 @@ fi
 
 %postun
 if [ "$1" = "0" -a -f /var/lock/subsys/rc-inetd ]; then
-	/sbin/ldconfig -q -r /home/ftp /lib
 	/etc/rc.d/init.d/rc-inetd reload 1>&2
 fi
 
@@ -177,16 +174,3 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_sbindir}/*
 
 %{_mandir}/man[158]/*
-
-%dir /home/ftp/pub
-%attr(644,root,root) %config(noreplace) %verify(not md5 mtime size) /home/ftp/etc/msgs/*
-%attr(711,root,root) %dir /home/ftp/pub/Incoming
-%attr(711,root,root) %dir /home/ftp/bin
-%attr(755,root,root) /home/ftp/bin/*
-%attr(711,root,root) %dir /home/ftp/etc
-%attr(755,root,root) %dir /home/ftp/etc/msgs
-%attr(755,root,root) %dir /home/ftp/lib
-%attr(755,root,root) /home/ftp/lib/*
-/home/ftp/etc/ld.so.cache
-/home/ftp/etc/passwd
-/home/ftp/etc/group
