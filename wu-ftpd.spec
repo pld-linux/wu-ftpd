@@ -6,7 +6,7 @@ Summary(ru):	FTP-сервер разработанный в Washington University
 Summary(uk):	FTP-сервер розроблений в Washington University
 Name:		wu-ftpd
 Version:	2.6.2
-Release:	8
+Release:	9
 License:	BSD
 Group:		Daemons
 Source0:	ftp://ftp.wu-ftpd.org/pub/wu-ftpd/%{name}-%{version}.tar.gz
