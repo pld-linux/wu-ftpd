@@ -1,19 +1,19 @@
-Summary: An FTP daemon provided by Washington University.
-Name: wu-ftpd
-Version: 2.4.2vr17
-Release: 3
-Copyright: BSD
-Group: System Environment/Daemons
-Source: ftp://ftp.vr.net/pub/wu-ftpd/wu-ftpd-2.4.2-vr17.tar.gz
-Source1: ftpd.log
-Source2: ftp.pamd
-Patch0: wu-ftpd-2.4.2-vr17-redhat.patch
-Patch1: wu-ftpd-2.4.2-vr17-glob.patch
-Patch2: wu-ftpd-2.4.2-vr17-pathname.patch
-Requires: pam >= 0.59
-Provides: ftpserver
-Prereq: fileutils
-Buildroot: /var/tmp/wu-ftpd-root
+Summary:	An FTP daemon provided by Washington University.
+Name: 		wu-ftpd
+Version:	2.4.2vr17
+Release:	3
+Copyright:	BSD
+Group:		System Environment/Daemons
+Source: 	ftp://ftp.vr.net/pub/wu-ftpd/wu-ftpd-2.4.2-vr17.tar.gz
+Source1:	ftpd.logrotate
+Source2:	ftp.pamd
+Patch0:		wu-ftpd-2.4.2-vr17-redhat.patch
+Patch1:		wu-ftpd-2.4.2-vr17-glob.patch
+Patch2:		wu-ftpd-2.4.2-vr17-pathname.patch
+Requires:	pam >= 0.59
+Provides:	ftpserver
+Prereq:		fileutils
+Buildroot:	/var/tmp/wu-ftpd-root
 
 %description
 The wu-ftpd package contains the wu-ftpd FTP (File Transfer Protocol)
