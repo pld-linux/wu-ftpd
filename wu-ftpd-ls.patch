@@ -1,0 +1,12 @@
+diff -uNdr wu-ftpd-2.6.2.old/src/ftpd.c wu-ftpd-2.6.2/src/ftpd.c
+--- wu-ftpd-2.6.2.old/src/ftpd.c	Fri Jan 25 21:45:26 2002
++++ wu-ftpd-2.6.2/src/ftpd.c	Fri Jan 25 21:47:44 2002
+@@ -3603,7 +3603,7 @@
+ {
+     char *a;
+     a = (char *) malloc(len + 1);
+-    memset(a, ' ', len-1);
++    memset(a, ' ', len);
+     a[len] = 0;
+     if (strlen(s) <= len)
+ 	memcpy(a, s, strlen(s));
