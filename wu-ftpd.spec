@@ -35,13 +35,13 @@ BuildRequires:	pam-devel
 PreReq:		rc-inetd
 Requires(post):	awk
 Requires(post):	fileutils
-Requires:	rc-inetd
-Requires:	logrotate
-Requires:	inetdaemon
 Provides:	ftpserver
-Obsoletes:	ftpserver
+Requires:	inetdaemon
+Requires:	logrotate
+Requires:	rc-inetd
 Obsoletes:	bftpd
 Obsoletes:	ftpd-BSD
+Obsoletes:	ftpserver
 Obsoletes:	heimdal-ftpd
 Obsoletes:	linux-ftpd
 Obsoletes:	muddleftpd
@@ -210,7 +210,6 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc CHANGES CONTRIBUTORS ERRATA LICENSE README doc/{HOWTO/*,misc/opie,TODO}
-
 %attr(750,root,root) %dir %{_sysconfdir}
 %attr(640,root,root) /etc/logrotate.d/*
 %attr(640,root,root) %ghost /var/log/*
