@@ -17,6 +17,7 @@ Source3:	ftp.pamd
 Source4:	%{name}-passwd
 Source5:	%{name}-group
 Source6:	ftpusers.tar.bz2
+# Source6-md5: 76c80b6ec9f4d079a1e27316edddbe16
 Patch0:		%{name}-ipv6.patch
 Patch1:		%{name}-install.patch
 Patch2:		%{name}-conf.patch
