@@ -8,6 +8,7 @@ Name:		wu-ftpd
 Version:	2.6.2
 Release:	9
 License:	BSD
+Vendor:		WU-FTPD Development Group <wuftpd-members@wu-ftpd.org>
 Group:		Daemons
 Source0:	ftp://ftp.wu-ftpd.org/pub/wu-ftpd/%{name}-%{version}.tar.gz
 Source1:	%{name}.inetd
@@ -22,14 +23,14 @@ Patch2:		%{name}-conf.patch
 Patch3:		%{name}-release.patch
 Patch4:		%{name}-ls.patch
 URL:		http://www.wu-ftpd.org/
-Vendor:		WU-FTPD Development Group <wuftpd-members@wu-ftpd.org>
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	ncompress
 BuildRequires:	pam-devel
-Prereq:		rc-inetd
-Prereq:		awk
+PreReq:		rc-inetd
+Requires(post):	awk
+Requires(post):	fileutils
 Requires:	rc-inetd
 Requires:	logrotate
 Requires:	inetdaemon
@@ -177,10 +178,12 @@ bzip2 -dc %{SOURCE6} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 rm -rf $RPM_BUILD_ROOT
 
 %post
+umask 027
 touch /var/log/xferlog
-awk 'BEGIN { FS = ":" }; { if (($3 < 1000) && ($1 != "ftp")) print $1; }' < /etc/passwd >> %{_sysconfdir}/ftpusers.default
+umask 022
+awk 'BEGIN { FS = ":" }; { if (($3 < 500) && ($1 != "ftp")) print $1; }' < /etc/passwd >> %{_sysconfdir}/ftpusers.default
 if [ ! -f %{_sysconfdir}/ftpusers ]; then
-	( cd %{_sysconfdir}; cp -f ftpusers.default ftpusers )
+	cp -f %{_sysconfdir}/ftpusers.default %{_sysconfdir}/ftpusers
 fi
 
 if [ -f /var/lock/subsys/rc-inetd ]; then
