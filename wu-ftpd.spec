@@ -22,6 +22,8 @@ Patch5:		%{name}-release.patch
 Patch6:		http://www.t17.ds.pwr.wroc.pl/~misiek/ipv6/%{name}-%{version}-ipv6-20000914.patch.gz
 URL:		http://www.wu-ftpd.org/
 Vendor:		WU-FTPD Development Group <wuftpd-members@wu-ftpd.org>
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	pam-devel
 BuildRequires:	bison
 BuildRequires:	ncompress
@@ -75,7 +77,7 @@ wirtualnych.
 
 %build
 sed -e 's/dnl.*//' <configure.in >configure.in.new
-mv configure.in.new configure.in
+mv -f configure.in.new configure.in
 aclocal
 autoconf
 %configure \
@@ -129,9 +131,12 @@ echo "Server shutdown."			> $RPM_BUILD_ROOT/home/ftp/etc/msgs/shutdown
 echo "Wrong file path."			> $RPM_BUILD_ROOT/home/ftp/etc/msgs/path
 
 mv -f $RPM_BUILD_ROOT%{_sbindir}/in.ftpd $RPM_BUILD_ROOT%{_sbindir}/wu-ftpd
-ln -s wu-ftpd $RPM_BUILD_ROOT%{_sbindir}/ftpd
+ln -sf wu-ftpd $RPM_BUILD_ROOT%{_sbindir}/ftpd
 
 gzip -9nf CHANGES CONTRIBUTORS README doc/{HOWTO/*,misc/opie,TODO}
+
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %post 
 touch /var/log/xferlog
@@ -150,9 +155,6 @@ fi
 if [ "$1" = "0" -a -f /var/lock/subsys/rc-inetd ]; then
 	/etc/rc.d/init.d/rc-inetd reload 1>&2
 fi
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
