@@ -39,6 +39,7 @@ Provides:	ftpserver
 Requires:	inetdaemon
 Requires:	logrotate
 Requires:	rc-inetd
+Requires:	pam >= 0.77.3
 Obsoletes:	bftpd
 Obsoletes:	ftpd-BSD
 Obsoletes:	ftpserver
