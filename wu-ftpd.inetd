@@ -6,5 +6,4 @@ FLAGS=nowait
 USER=root
 SERVER=tcpd
 DAEMON=/usr/sbin/wu-ftpd
-DAEMON_ARGS="-a -l"
-FAMILY=ipv4
+DAEMONARGS="-a -l"
