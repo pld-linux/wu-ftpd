@@ -6,7 +6,7 @@ Summary(ru):	FTP-сервер разработанный в Washington University
 Summary(uk):	FTP-сервер розроблений в Washington University
 Name:		wu-ftpd
 Version:	2.6.2
-Release:	10
+Release:	11
 License:	BSD
 Vendor:		WU-FTPD Development Group <wuftpd-members@wu-ftpd.org>
 Group:		Daemons
@@ -25,6 +25,7 @@ Patch2:		%{name}-conf.patch
 Patch3:		%{name}-release.patch
 Patch4:		%{name}-ls.patch
 Patch5:		%{name}-2.6.2-realpatch.patch
+Patch6:		%{name}-sec_debian.patch
 URL:		http://www.wu-ftpd.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -118,6 +119,7 @@ Protocol). Можливост╕ wu-ftpd включають протоколювання пересилок
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 %build
 sed -e 's/dnl.*//' <configure.in >configure.in.new
