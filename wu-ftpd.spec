@@ -3,7 +3,7 @@ Name: 		wu-ftpd
 Version:	2.4.2vr17
 Release:	4
 Copyright:	BSD
-Group:		System Environment/Daemons
+Group:		Daemons
 Source: 	ftp://ftp.vr.net/pub/wu-ftpd/wu-ftpd-2.4.2-vr17.tar.gz
 Source1:	ftpd.logrotate
 Source2:	ftp.pamd
