@@ -69,5 +69,5 @@ fi
 /usr/bin/*
 /usr/man/*/*
 %config /etc/ftp*
-%config /etc/pam.d/ftp
+%attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/ftp
 %config /etc/logrotate.d/ftpd
