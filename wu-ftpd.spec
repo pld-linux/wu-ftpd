@@ -79,7 +79,7 @@ um sistema de arquivos de rede como NFS; ou se você deseja ter um site
 de FTP anônimo (neste caso, você necessita instalar o pacote anonftp).
 
 %prep
-%setup -q 
+%setup -q
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -103,7 +103,7 @@ autoconf
 	--disable-numericuid \
 	--enable-rfc931 \
 	--enable-ipv6
-	
+
 %{__make}
 
 %install
@@ -149,7 +149,7 @@ gzip -9nf CHANGES CONTRIBUTORS ERRATA LICENSE README doc/{HOWTO/*,misc/opie,TODO
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post 
+%post
 touch /var/log/xferlog
 awk 'BEGIN { FS = ":" }; { if (($3 < 1000) && ($1 != "ftp")) print $1; }' < /etc/passwd >> %{_sysconfdir}/ftpusers.default
 if [ ! -f %{_sysconfdir}/ftpusers ]; then
