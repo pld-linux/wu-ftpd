@@ -1,0 +1,8 @@
+SERVICE_NAME=ftp
+SOCK_TYPE=stream
+PROTOCOL=tcp
+FLAGS=nowait
+USER=root
+SERVER=tcpd
+DAEMON=/usr/sbin/in.ftpd
+DAEMON="-a -l"
