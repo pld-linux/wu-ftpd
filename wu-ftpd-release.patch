@@ -1,0 +1,12 @@
+diff -urN wu-ftpd-2.6.1.org/src/newvers.sh wu-ftpd-2.6.1/src/newvers.sh
+--- wu-ftpd-2.6.1.org/src/newvers.sh	Sun Sep 10 15:26:26 2000
++++ wu-ftpd-2.6.1/src/newvers.sh	Sun Sep 10 18:32:04 2000
+@@ -25,6 +25,8 @@
+ #
+ if [ ! -r edit ]; then echo 0 > edit; fi
+ touch edit
++echo 'char version[] = "PLD GNU/Linux";' > vers.c
++exit 0
+ awk '	{	edit = $1 + 1; }\
+ END	{	printf "char version[] = \"Version wu-2.6.1(%d) ", edit > "vers.c";\
+ #LANG=
