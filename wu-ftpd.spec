@@ -116,7 +116,7 @@ Protocol). Можливост╕ wu-ftpd включають протоколювання пересилок
 %build
 sed -e 's/dnl.*//' <configure.in >configure.in.new
 mv -f configure.in.new configure.in
-aclocal
+%{__aclocal}
 %{__autoconf}
 %configure \
 	--with-etc-dir=%{_sysconfdir} \
