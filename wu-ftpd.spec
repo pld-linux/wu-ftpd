@@ -6,7 +6,7 @@ Summary(ru):	FTP-сервер разработанный в Washington University
 Summary(uk):	FTP-сервер розроблений в Washington University
 Name:		wu-ftpd
 Version:	2.6.2
-Release:	7
+Release:	8
 License:	BSD
 Group:		Daemons
 Source0:	ftp://ftp.wu-ftpd.org/pub/wu-ftpd/%{name}-%{version}.tar.gz
@@ -15,6 +15,7 @@ Source2:	%{name}.logrotate
 Source3:	ftp.pamd
 Source4:	%{name}-passwd
 Source5:	%{name}-group
+Source6:	ftpusers.tar.bz2
 Patch0:		%{name}-ipv6.patch
 Patch1:		%{name}-install.patch
 Patch2:		%{name}-conf.patch
@@ -169,6 +170,8 @@ echo "Wrong file path."			> $RPM_BUILD_ROOT/home/ftp/etc/msgs/path
 mv -f $RPM_BUILD_ROOT%{_sbindir}/in.ftpd $RPM_BUILD_ROOT%{_sbindir}/wu-ftpd
 ln -sf wu-ftpd $RPM_BUILD_ROOT%{_sbindir}/ftpd
 
+bzip2 -dc %{SOURCE6} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -213,3 +216,7 @@ fi
 %attr(755,root,root) %{_sbindir}/*
 
 %{_mandir}/man[158]/*
+%lang(ja) %{_mandir}/ja/man5/ftpusers*
+%lang(pl) %{_mandir}/pl/man5/ftpusers*
+%lang(pt_BR) %{_mandir}/pt_BR/man5/ftpusers*
+%lang(ru) %{_mandir}/ru/man5/ftpusers*
