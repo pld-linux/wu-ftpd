@@ -35,11 +35,15 @@ Requires:	logrotate
 Requires:	inetdaemon
 Provides:	ftpserver
 Obsoletes:	ftpserver
-Obsoletes:	wu-ftpd
-Obsoletes:	ftpd-BSD
-Obsoletes:	linux-ftpd
 Obsoletes:	anonftp
 Obsoletes:	bftpd
+Obsoletes:	ftpd-BSD
+Obsoletes:	heimdal-ftpd
+Obsoletes:	linux-ftpd
+Obsoletes:	muddleftpd
+Obsoletes:	proftpd
+Obsoletes:	pure-ftpd
+Obsoletes:	troll-ftpd
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/ftpd
