@@ -41,7 +41,7 @@ RPM_OPT_FLAGS="$RPM_OPT_FLAGS" ./build lnx USE_PAM=1
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/etc
-make install DESTDIR=$RPM_BUILD_ROOT
+%{__make} install DESTDIR=$RPM_BUILD_ROOT
 install -m755 util/xferstats $RPM_BUILD_ROOT/usr/sbin
 cd rhsconfig
 install -m 600 ftpaccess ftpusers  ftphosts ftpgroups ftpconversions $RPM_BUILD_ROOT/etc
