@@ -4,7 +4,7 @@ Summary(pl):	Serwer FTP stworzony przez Uniwersystet Waszyngtona
 Summary(pt_BR):	Deamon FTP da Universidade de Washington
 Name:		wu-ftpd
 Version:	2.6.2
-Release:	1
+Release:	2
 License:	BSD
 Group:		Daemons
 Group(de):	Server
@@ -19,6 +19,7 @@ Patch0:		%{name}-ipv6.patch
 Patch1:		%{name}-install.patch
 Patch2:		%{name}-conf.patch
 Patch3:		%{name}-release.patch
+Patch4:		%{name}-ls.patch
 URL:		http://www.wu-ftpd.org/
 Vendor:		WU-FTPD Development Group <wuftpd-members@wu-ftpd.org>
 BuildRequires:	autoconf
@@ -85,6 +86,7 @@ de FTP anônimo (neste caso, você necessita instalar o pacote anonftp).
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 sed -e 's/dnl.*//' <configure.in >configure.in.new
@@ -157,7 +159,7 @@ if [ ! -f %{_sysconfdir}/ftpusers ]; then
 fi
 
 if [ -f /var/lock/subsys/rc-inetd ]; then
-	/etc/rc.d/init.d/rc-inetd restart 1>&2
+	/etc/rc.d/init.d/rc-inetd reload 1>&2
 else
 	echo "Type \"/etc/rc.d/init.d/rc-inetd start\" to start inet server" 1>&2
 fi
