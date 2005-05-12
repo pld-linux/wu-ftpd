@@ -6,7 +6,7 @@ Summary(ru):	FTP-сервер разработанный в Washington University
 Summary(uk):	FTP-сервер розроблений в Washington University
 Name:		wu-ftpd
 Version:	2.6.2
-Release:	12
+Release:	13
 License:	BSD
 Vendor:		WU-FTPD Development Group <wuftpd-members@wu-ftpd.org>
 Group:		Daemons
@@ -39,7 +39,7 @@ Provides:	ftpserver
 Requires:	inetdaemon
 Requires:	logrotate
 Requires:	rc-inetd
-Requires:	pam >= 0.77.3
+Requires:	pam >= 0.79.0
 Obsoletes:	bftpd
 Obsoletes:	ftpd-BSD
 Obsoletes:	ftpserver
