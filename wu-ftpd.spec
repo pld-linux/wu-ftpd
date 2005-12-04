@@ -32,14 +32,14 @@ BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	ncompress
 BuildRequires:	pam-devel
-PreReq:		rc-inetd
 Requires(post):	awk
 Requires(post):	fileutils
+Requires:	rc-inetd
 Provides:	ftpserver
 Requires:	inetdaemon
 Requires:	logrotate
-Requires:	rc-inetd
 Requires:	pam >= 0.79.0
+Requires:	rc-inetd
 Obsoletes:	bftpd
 Obsoletes:	ftpd-BSD
 Obsoletes:	ftpserver
@@ -213,11 +213,11 @@ fi
 %defattr(644,root,root,755)
 %doc CHANGES CONTRIBUTORS ERRATA LICENSE README doc/{HOWTO/*,misc/opie,TODO}
 %attr(750,root,root) %dir %{_sysconfdir}
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/logrotate.d/*
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/*
 %attr(640,root,root) %ghost /var/log/*
-%attr(640,root,root) /etc/sysconfig/rc-inetd/ftpd
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/rc-inetd/ftpd
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/*
-%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist.ftp
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist.ftp
 
 %attr(640,root,root) %{_sysconfdir}/ftpusers.default
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/ftpaccess
