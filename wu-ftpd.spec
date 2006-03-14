@@ -8,7 +8,6 @@ Name:		wu-ftpd
 Version:	2.6.2
 Release:	13
 License:	BSD
-Vendor:		WU-FTPD Development Group <wuftpd-members@wu-ftpd.org>
 Group:		Daemons
 Source0:	ftp://ftp.wu-ftpd.org/pub/wu-ftpd/%{name}-%{version}.tar.gz
 # Source0-md5:	b3c271f02aadf663b8811d1bff9da3f6
@@ -32,14 +31,14 @@ BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	ncompress
 BuildRequires:	pam-devel
+BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post):	awk
 Requires(post):	fileutils
-Requires:	rc-inetd
-Provides:	ftpserver
 Requires:	inetdaemon
 Requires:	logrotate
 Requires:	pam >= 0.79.0
 Requires:	rc-inetd
+Provides:	ftpserver
 Obsoletes:	bftpd
 Obsoletes:	ftpd-BSD
 Obsoletes:	ftpserver
@@ -198,15 +197,11 @@ if [ ! -f %{_sysconfdir}/ftpusers ]; then
 	cp -f %{_sysconfdir}/ftpusers.default %{_sysconfdir}/ftpusers
 fi
 
-if [ -f /var/lock/subsys/rc-inetd ]; then
-	/etc/rc.d/init.d/rc-inetd reload 1>&2
-else
-	echo "Type \"/etc/rc.d/init.d/rc-inetd start\" to start inet server" 1>&2
-fi
+%service -q rc-inetd reload
 
 %postun
-if [ "$1" = "0" -a -f /var/lock/subsys/rc-inetd ]; then
-	/etc/rc.d/init.d/rc-inetd reload 1>&2
+if [ "$1" = "0" ]; then
+	%service -q rc-inetd reload
 fi
 
 %files
