@@ -1,9 +1,9 @@
 Summary:	An FTP daemon provided by Washington University
-Summary(es.UTF-8):   Deamon FTP de la Universidad de Washington
-Summary(pl.UTF-8):   Serwer FTP stworzony przez Uniwersystet Waszyngtona
-Summary(pt_BR.UTF-8):   Deamon FTP da Universidade de Washington
-Summary(ru.UTF-8):   FTP-сервер разработанный в Washington University
-Summary(uk.UTF-8):   FTP-сервер розроблений в Washington University
+Summary(es.UTF-8):	Deamon FTP de la Universidad de Washington
+Summary(pl.UTF-8):	Serwer FTP stworzony przez Uniwersystet Waszyngtona
+Summary(pt_BR.UTF-8):	Deamon FTP da Universidade de Washington
+Summary(ru.UTF-8):	FTP-сервер разработанный в Washington University
+Summary(uk.UTF-8):	FTP-сервер розроблений в Washington University
 Name:		wu-ftpd
 Version:	2.6.2
 Release:	13
