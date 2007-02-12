@@ -1,9 +1,9 @@
 Summary:	An FTP daemon provided by Washington University
-Summary(es):	Deamon FTP de la Universidad de Washington
-Summary(pl):	Serwer FTP stworzony przez Uniwersystet Waszyngtona
-Summary(pt_BR):	Deamon FTP da Universidade de Washington
-Summary(ru):	FTP-сервер разработанный в Washington University
-Summary(uk):	FTP-сервер розроблений в Washington University
+Summary(es.UTF-8):   Deamon FTP de la Universidad de Washington
+Summary(pl.UTF-8):   Serwer FTP stworzony przez Uniwersystet Waszyngtona
+Summary(pt_BR.UTF-8):   Deamon FTP da Universidade de Washington
+Summary(ru.UTF-8):   FTP-я│п╣я─п╡п╣я─ я─п╟п╥я─п╟п╠п╬я┌п╟п╫п╫я▀п╧ п╡ Washington University
+Summary(uk.UTF-8):   FTP-я│п╣я─п╡п╣я─ я─п╬п╥я─п╬п╠п╩п╣п╫п╦п╧ п╡ Washington University
 Name:		wu-ftpd
 Version:	2.6.2
 Release:	13
@@ -69,48 +69,48 @@ location, per class limits, per directory upload permissions,
 restricted guest accounts, system wide and per directory messages,
 directory alias, cdpath, filename filter, virtual host support.
 
-%description -l es
-wu-ftpd es el daemon que ccc archivos FTP para clientes FTP. Es Зtil
+%description -l es.UTF-8
+wu-ftpd es el daemon que ccc archivos FTP para clientes FTP. Es ц╨til
 si deseas transferir programas entre ordenadores sin ejecutar un
 sistema de archivos de red como NFS; o si deseas tener un sitio de FTP
-anСnimo (en este caso, necesitas instalar el paquete anonftp).
+anцЁnimo (en este caso, necesitas instalar el paquete anonftp).
 
-%description -l pl
-wu-ftpd jest bezpo╤rednim zamiennikiem serwera FTP dla systemСw Un*x.
-Poza wsparciem dla protokoЁu FTP zdefiniowanego w RFC 959 wu-ftpd
-zawiera kilka nowo╤ci takich jak: logowanie transferСw, logowanie
-komend, kompresja i archiwizacja w locie, klasyfikacja u©ytkownikСw na
+%description -l pl.UTF-8
+wu-ftpd jest bezpoе⌡rednim zamiennikiem serwera FTP dla systemцЁw Un*x.
+Poza wsparciem dla protokoе┌u FTP zdefiniowanego w RFC 959 wu-ftpd
+zawiera kilka nowoе⌡ci takich jak: logowanie transferцЁw, logowanie
+komend, kompresja i archiwizacja w locie, klasyfikacja uе╪ytkownikцЁw na
 podstawie typu i lokalizacji, limity na podstawie klasy, uprawnienia
-do uploadowania dla dowolnego katalogu, restrykcyjne konta dla go╤ci,
-ogСlne komunikaty systemowe oraz komunikaty w zale©no╤ci od katalogu,
-aliasy dla katalogСw, cdpath, filtr nazw plikСw, wsparcie dla serwerСw
+do uploadowania dla dowolnego katalogu, restrykcyjne konta dla goе⌡ci,
+ogцЁlne komunikaty systemowe oraz komunikaty w zaleе╪noе⌡ci od katalogu,
+aliasy dla katalogцЁw, cdpath, filtr nazw plikцЁw, wsparcie dla serwerцЁw
 wirtualnych.
 
-%description -l pt_BR
-wu-ftpd И o daemon que serve arquivos FTP para clientes FTP. Ele И
-Зtil se vocЙ deseja transferir programas entre computadores sem rodar
-um sistema de arquivos de rede como NFS; ou se vocЙ deseja ter um site
-de FTP anТnimo (neste caso, vocЙ necessita instalar o pacote anonftp).
+%description -l pt_BR.UTF-8
+wu-ftpd ц╘ o daemon que serve arquivos FTP para clientes FTP. Ele ц╘
+ц╨til se vocц╙ deseja transferir programas entre computadores sem rodar
+um sistema de arquivos de rede como NFS; ou se vocц╙ deseja ter um site
+de FTP anц╢nimo (neste caso, vocц╙ necessita instalar o pacote anonftp).
 
-%description -l ru
-Этот пакет содержит сервер wu-ftpd протокола FTP (File Transfer
-Protocol). Возможности wu-ftpd включают протоколирование пересылок
-файлов, протоколирование команд, компрессию и архивирование "на лету",
-классификация пользователей по типам и "локальности", разные лимиты
-для разных классов, разрешения на загрузку файлов по каждому каталогу
-отдельно, ограниченные гостевые входы, общесистемные и индивидуальные
-для каталогов сообщения, синонимы каталогов, cdpath, фильтр имен
-файлов и поддержка виртуальных серверов.
+%description -l ru.UTF-8
+п╜я┌п╬я┌ п©п╟п╨п╣я┌ я│п╬п╢п╣я─п╤п╦я┌ я│п╣я─п╡п╣я─ wu-ftpd п©я─п╬я┌п╬п╨п╬п╩п╟ FTP (File Transfer
+Protocol). п▓п╬п╥п╪п╬п╤п╫п╬я│я┌п╦ wu-ftpd п╡п╨п╩я▌я┤п╟я▌я┌ п©я─п╬я┌п╬п╨п╬п╩п╦я─п╬п╡п╟п╫п╦п╣ п©п╣я─п╣я│я▀п╩п╬п╨
+я└п╟п╧п╩п╬п╡, п©я─п╬я┌п╬п╨п╬п╩п╦я─п╬п╡п╟п╫п╦п╣ п╨п╬п╪п╟п╫п╢, п╨п╬п╪п©я─п╣я│я│п╦я▌ п╦ п╟я─я┘п╦п╡п╦я─п╬п╡п╟п╫п╦п╣ "п╫п╟ п╩п╣я┌я┐",
+п╨п╩п╟я│я│п╦я└п╦п╨п╟я├п╦я▐ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩п╣п╧ п©п╬ я┌п╦п©п╟п╪ п╦ "п╩п╬п╨п╟п╩я▄п╫п╬я│я┌п╦", я─п╟п╥п╫я▀п╣ п╩п╦п╪п╦я┌я▀
+п╢п╩я▐ я─п╟п╥п╫я▀я┘ п╨п╩п╟я│я│п╬п╡, я─п╟п╥я─п╣я┬п╣п╫п╦я▐ п╫п╟ п╥п╟пЁя─я┐п╥п╨я┐ я└п╟п╧п╩п╬п╡ п©п╬ п╨п╟п╤п╢п╬п╪я┐ п╨п╟я┌п╟п╩п╬пЁя┐
+п╬я┌п╢п╣п╩я▄п╫п╬, п╬пЁя─п╟п╫п╦я┤п╣п╫п╫я▀п╣ пЁп╬я│я┌п╣п╡я▀п╣ п╡я┘п╬п╢я▀, п╬п╠я┴п╣я│п╦я│я┌п╣п╪п╫я▀п╣ п╦ п╦п╫п╢п╦п╡п╦п╢я┐п╟п╩я▄п╫я▀п╣
+п╢п╩я▐ п╨п╟я┌п╟п╩п╬пЁп╬п╡ я│п╬п╬п╠я┴п╣п╫п╦я▐, я│п╦п╫п╬п╫п╦п╪я▀ п╨п╟я┌п╟п╩п╬пЁп╬п╡, cdpath, я└п╦п╩я▄я┌я─ п╦п╪п╣п╫
+я└п╟п╧п╩п╬п╡ п╦ п©п╬п╢п╢п╣я─п╤п╨п╟ п╡п╦я─я┌я┐п╟п╩я▄п╫я▀я┘ я│п╣я─п╡п╣я─п╬п╡.
 
-%description -l uk
-Цей пакет м╕стить сервер wu-ftpd протоколу FTP (File Transfer
-Protocol). Можливост╕ wu-ftpd включають протоколювання пересилок
-файл╕в, протоколювання команд, компрес╕я та арх╕вац╕я "на льоту",
-класиф╕кац╕я користувач╕в по типу та та "локальност╕", р╕зн╕ обмеження
-для р╕зних клас╕в, покаталоговий дозв╕л на завантаження файл╕в,
-обмежен╕ гостьов╕ входи, загальн╕ та окрем╕ для каталог╕в
-пов╕домлення, синон╕ми каталог╕в, cdpath, ф╕льтр ╕мен файл╕в та
-п╕дтримка в╕ртуальних сервер╕в.
+%description -l uk.UTF-8
+п╕п╣п╧ п©п╟п╨п╣я┌ п╪я√я│я┌п╦я┌я▄ я│п╣я─п╡п╣я─ wu-ftpd п©я─п╬я┌п╬п╨п╬п╩я┐ FTP (File Transfer
+Protocol). п°п╬п╤п╩п╦п╡п╬я│я┌я√ wu-ftpd п╡п╨п╩я▌я┤п╟я▌я┌я▄ п©я─п╬я┌п╬п╨п╬п╩я▌п╡п╟п╫п╫я▐ п©п╣я─п╣я│п╦п╩п╬п╨
+я└п╟п╧п╩я√п╡, п©я─п╬я┌п╬п╨п╬п╩я▌п╡п╟п╫п╫я▐ п╨п╬п╪п╟п╫п╢, п╨п╬п╪п©я─п╣я│я√я▐ я┌п╟ п╟я─я┘я√п╡п╟я├я√я▐ "п╫п╟ п╩я▄п╬я┌я┐",
+п╨п╩п╟я│п╦я└я√п╨п╟я├я√я▐ п╨п╬я─п╦я│я┌я┐п╡п╟я┤я√п╡ п©п╬ я┌п╦п©я┐ я┌п╟ я┌п╟ "п╩п╬п╨п╟п╩я▄п╫п╬я│я┌я√", я─я√п╥п╫я√ п╬п╠п╪п╣п╤п╣п╫п╫я▐
+п╢п╩я▐ я─я√п╥п╫п╦я┘ п╨п╩п╟я│я√п╡, п©п╬п╨п╟я┌п╟п╩п╬пЁп╬п╡п╦п╧ п╢п╬п╥п╡я√п╩ п╫п╟ п╥п╟п╡п╟п╫я┌п╟п╤п╣п╫п╫я▐ я└п╟п╧п╩я√п╡,
+п╬п╠п╪п╣п╤п╣п╫я√ пЁп╬я│я┌я▄п╬п╡я√ п╡я┘п╬п╢п╦, п╥п╟пЁп╟п╩я▄п╫я√ я┌п╟ п╬п╨я─п╣п╪я√ п╢п╩я▐ п╨п╟я┌п╟п╩п╬пЁя√п╡
+п©п╬п╡я√п╢п╬п╪п╩п╣п╫п╫я▐, я│п╦п╫п╬п╫я√п╪п╦ п╨п╟я┌п╟п╩п╬пЁя√п╡, cdpath, я└я√п╩я▄я┌я─ я√п╪п╣п╫ я└п╟п╧п╩я√п╡ я┌п╟
+п©я√п╢я┌я─п╦п╪п╨п╟ п╡я√я─я┌я┐п╟п╩я▄п╫п╦я┘ я│п╣я─п╡п╣я─я√п╡.
 
 %prep
 %setup -q
