@@ -1,0 +1,4 @@
+- release 9,
+- spec adapterized,
+- removed chroot environment for wu-ftpd (this must be provided by anonftp
+  package).
