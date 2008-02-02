@@ -6,7 +6,7 @@ Summary(ru.UTF-8):	FTP-сервер разработанный в Washington Uni
 Summary(uk.UTF-8):	FTP-сервер розроблений в Washington University
 Name:		wu-ftpd
 Version:	2.6.2
-Release:	13
+Release:	14
 License:	BSD
 Group:		Daemons
 Source0:	ftp://ftp.wu-ftpd.org/pub/wu-ftpd/%{name}-%{version}.tar.gz
@@ -39,21 +39,6 @@ Requires:	logrotate
 Requires:	pam >= 0.79.0
 Requires:	rc-inetd
 Provides:	ftpserver
-Obsoletes:	bftpd
-Obsoletes:	ftpd-BSD
-Obsoletes:	ftpserver
-Obsoletes:	glftpd
-Obsoletes:	heimdal-ftpd
-Obsoletes:	krb5-ftpd
-Obsoletes:	linux-ftpd
-Obsoletes:	muddleftpd
-Obsoletes:	proftpd
-Obsoletes:	proftpd-common
-Obsoletes:	proftpd-inetd
-Obsoletes:	proftpd-standalone
-Obsoletes:	pure-ftpd
-Obsoletes:	troll-ftpd
-Obsoletes:	vsftpd
 Conflicts:	man-pages < 1.51
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
